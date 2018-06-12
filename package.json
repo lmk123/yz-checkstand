@@ -1,0 +1,31 @@
+{
+  "name": "yz-checkstand",
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@types/koa": "^2.0.46",
+    "@types/koa-bodyparser": "^4.2.0",
+    "@types/koa-router": "^7.0.28",
+    "@types/koa-static": "^4.0.0",
+    "koa": "^2.5.1",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
+    "koa-static": "^4.0.3",
+    "ngrok": "^3.0.1",
+    "ts-node": "^6.1.0",
+    "typescript": "^2.9.1"
+  },
+  "scripts": {
+    "prepublishOnly": "tsc -p tsconfig.json",
+    "start": "ts-node demo",
+    "rp": "ngrok http --region=ap 2727"
+  },
+  "peerDependencies": {
+    "@types/node": "*"
+  }
+}

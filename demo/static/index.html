@@ -1,0 +1,25 @@
+<html>
+
+<head>
+  <title>测试有赞收银台</title>
+</head>
+
+<body>
+  <div>
+    <input type="text" id="price" placeholder="输入付款金额">
+    <button onclick="create()">生成二维码</button>
+  </div>
+  <div>
+    <div>
+      二维码实时状态：
+      <span id="status" style="color: red"></span>
+    </div>
+    <div>
+      <button onclick="query()">手动查询此二维码是否已支付</button>
+    </div>
+    <img id="img">
+  </div>
+  <script src="index.js"></script>
+</body>
+
+</html>
