@@ -112,11 +112,11 @@ checkstand.callAPI({
 
 ## 在本地测试有赞接口
 
-如果你有一个有赞应用，你可以在本地运行 [demo](demo/index.ts) 测试是否能正常支付：
+如果你有一个有赞应用，你可以在本地运行 [demo](https://github.com/Selection-Translator/yz-checkstand/blob/master/demo/index.ts) 测试是否能正常支付：
 
 1. Clone 项目到本地
 2. 安装依赖：`yarn` 或 `npm i`
-3. 修改 [demo/index.ts](demo/index.ts) 中的有赞应用信息
+3. 修改 [demo/index.ts](https://github.com/Selection-Translator/yz-checkstand/blob/master/demo/index.ts) 中的有赞应用信息
 4. 启动应用：`yarn start` 或 `npm start`
 5. 启动反向代理：`yarn rp` 或 `npm run rp`，并将有赞应用的消息推送网址设为反代服务器的地址
 6. 打开 http://localhost:2727
