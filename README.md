@@ -63,7 +63,7 @@ router.post('/youzan-push', bodyParser(), async (ctx, next) => {
 
 `orderInfo` 是下面的对象：
 
-```json
+```js
 {
   "qr_id": "12321", // 此次交易信息关联的二维码 id
   "status": "TRADE_SUCCESS", // 交易状态
@@ -83,7 +83,7 @@ router.post('/youzan-push', bodyParser(), async (ctx, next) => {
 
 返回一个 Promise，值是下面的一个对象：
 
-```json
+```js
 {
   "access_token": "2df2df2232df32", // 用于调用有赞接口的 token
   "expires_in": 3213123322000, // token 过期时间，单位：毫秒
