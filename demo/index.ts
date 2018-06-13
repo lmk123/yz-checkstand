@@ -22,10 +22,7 @@ const orders: {
 
 // 创建动态收款二维码
 router.get('/qr', async (ctx, next) => {
-  const qrInfo = await api.createQR({
-    price: Number(ctx.query.price),
-    name: '测试有赞收银台'
-  })
+  const qrInfo = await api.createQR(Number(ctx.query.price), '测试有赞收银台')
 
   orders[qrInfo.qr_id] = qrInfo
 

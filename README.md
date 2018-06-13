@@ -24,10 +24,9 @@ const checkstand = new Checkstand({
 接下来，你可以调用 `createQR()` 方法创建一个动态二维码：
 
 ```js
-const qr = await checkstand.createQR({
-  price: 100, // 金额，单位：元
-  name: '测试有赞接口' // 收款理由
-})
+// 第一个参数是收款金额，单位：元
+// 第二个参数是收款理由，可选，如果不填会默认设置为 “收款 xx 元”
+const qr = await checkstand.createQR(100, '测试有赞接口')
 ```
 
 上面的 `qr` 就是 [youzan.pay.qrcode.create](https://www.youzanyun.com/apilist/detail/group_trade/pay_qrcode/youzan.pay.qrcode.create) 的响应参数。
@@ -94,32 +93,28 @@ router.post('/youzan-push', bodyParser(), async (ctx, next) => {
 
 Checkstand 会在 token 过期时自动更新 token，所以无需担心内部细节。
 
-#### checkstand.callAPI(options)
+#### checkstand.callAPI(api[, params, version])
 
 调用有赞接口的便捷方法。例如，如果要调用 [youzan.trade.get](https://www.youzanyun.com/apilist/detail/group_trade/trade/youzan.trade.get) 接口，可以这样写：
 
 ```js
-checkstand.callAPI({
-  name: 'youzan.trade',
-  method: 'get',
-  params: {
-    tid: '123123'
-  }
+checkstand.callAPI('youzan.trade.get', {
+  tid: '123123'
 }).then(response => ...)
 ```
 
-调用接口时，`callAPI()` 方法会自动带上 access_token。
+调用接口时，`callAPI()` 方法会自动带上 access_token；`callAPI()` 默认使用 3.0.0 版本的接口，可以用第三个参数指定接口版本。
 
 ## 在本地测试有赞接口
 
 如果你有一个有赞应用，你可以在本地运行 [demo](https://github.com/Selection-Translator/yz-checkstand/blob/master/demo/index.ts) 测试是否能正常支付：
 
-1. Clone 项目到本地
-2. 安装依赖：`yarn` 或 `npm i`
-3. 修改 [demo/index.ts](https://github.com/Selection-Translator/yz-checkstand/blob/master/demo/index.ts) 中的有赞应用信息
-4. 启动应用：`yarn start` 或 `npm start`
-5. 启动反向代理：`yarn rp` 或 `npm run rp`，并将有赞应用的消息推送网址设为反代服务器的地址
-6. 打开 http://localhost:2727
+1.  Clone 项目到本地
+2.  安装依赖：`yarn` 或 `npm i`
+3.  修改 [demo/index.ts](https://github.com/Selection-Translator/yz-checkstand/blob/master/demo/index.ts) 中的有赞应用信息
+4.  启动应用：`yarn start` 或 `npm start`
+5.  启动反向代理：`yarn rp` 或 `npm run rp`，并将有赞应用的消息推送网址设为反代服务器的地址
+6.  打开 http://localhost:2727
 
 ## 许可
 
