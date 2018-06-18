@@ -14,6 +14,11 @@ interface AccessData {
   craete_at: number
 }
 
+interface AccessError {
+  error: string
+  error_description: string
+}
+
 interface QRData {
   qr_id: string
   qr_url: string
@@ -67,6 +72,10 @@ function response2Data(res: IncomingMessage): Promise<any> {
 
 const TradeStatus = ['WAIT_BUYER_PAY', 'TRADE_SUCCESS']
 
+function isError(data: AccessData | AccessError): data is AccessError {
+  return !!(<AccessError>data).error
+}
+
 export = class Checkstand {
   private _auth: AuthParams
   private _token: AccessData | null
@@ -87,12 +96,19 @@ export = class Checkstand {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         },
         res => {
-          response2Data(res).then((accessData: AccessData) => {
-            accessData.craete_at = createAt
-            // 统一转换为毫秒
-            accessData.expires_in = accessData.expires_in * 1000
-            this._token = accessData
-            resolve(accessData)
+          response2Data(res).then((accessData: AccessData | AccessError) => {
+            if (isError(accessData)) {
+              const err = new Error(accessData.error_description)
+              // @ts-ignore
+              err._code = accessData.error
+              reject(err)
+            } else {
+              accessData.craete_at = createAt
+              // 统一转换为毫秒
+              accessData.expires_in = accessData.expires_in * 1000
+              this._token = accessData
+              resolve(accessData)
+            }
           }, reject)
         }
       )
@@ -131,7 +147,17 @@ export = class Checkstand {
             )
           )}`,
           res => {
-            response2Data(res).then(data => resolve(data.response), reject)
+            response2Data(res).then(data => {
+              const errorRes = data.error_response
+              if (errorRes) {
+                const err = new Error(errorRes.msg)
+                // @ts-ignore
+                err._res = errorRes
+                reject(err)
+              } else {
+                resolve(data.response)
+              }
+            }, reject)
           }
         )
         req.on('error', reject)
@@ -155,7 +181,7 @@ export = class Checkstand {
    * 根据 qr id 判断扫描此二维码的用户是否已付款
    * @see https://www.youzanyun.com/apilist/detail/group_trade/pay_qrcode/youzan.trades.qr.get
    */
-  isPaid(qrId: string | number) {
+  isPaid(qrId: string) {
     return this.callAPI('youzan.trades.qr.get', {
       qr_id: qrId,
       status: 'TRADE_RECEIVED'
@@ -183,7 +209,7 @@ export = class Checkstand {
     return this.callAPI('youzan.trade.get', {
       tid: tradeMsg.tid
     }).then(data => ({
-      qr_id: data.trade.qr_id as number,
+      qr_id: data.trade.qr_id as string,
       status: tradeMsg.status,
       raw: data.trade
     }))
