@@ -1,3 +1,5 @@
+**有赞微小店的支付方式已经不能再用了，这个项目不再维护。**
+
 # Checkstand
 
 写给 Node.js 应用的有赞二维码支付工具，关于有赞二维码支付的详细介绍请阅读[个人网站即时到账收款解决方案](https://blog.xu42.cn/2017/11/26/person-website-instant-payment-solution/)。
